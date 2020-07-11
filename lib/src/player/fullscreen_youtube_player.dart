@@ -118,17 +118,19 @@ class _FullScreenYoutubePlayerState extends State<_FullScreenYoutubePlayer> {
         widget.controller.value.copyWith(isFullScreen: true),
       ),
     );
-    /*SystemChrome.setEnabledSystemUIOverlays([]);
+    SystemChrome.setEnabledSystemUIOverlays([]);
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight,
-    ]);*/
+    ]);
   }
 
   @override
   void dispose() {
-    //SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
-    //SystemChrome.setPreferredOrientations(DeviceOrientation.values);
+    SystemChrome.setEnabledSystemUIOverlays([]);
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     SchedulerBinding.instance.addPostFrameCallback(
       (_) => widget.controller.updateValue(
         widget.controller.value.copyWith(isFullScreen: false),
