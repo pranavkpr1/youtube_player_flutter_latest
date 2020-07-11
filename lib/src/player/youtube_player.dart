@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:flutter/services.dart';
 import '../enums/thumbnail_quality.dart';
 import '../utils/errors.dart';
 import '../utils/youtube_meta_data.dart';
@@ -14,7 +15,7 @@ import '../utils/youtube_player_flags.dart';
 import '../widgets/widgets.dart';
 import 'fullscreen_youtube_player.dart';
 import 'raw_youtube_player.dart';
-import 'package:flutter/services.dart';
+
 
 /// A widget to play or stream YouTube videos using the official [YouTube IFrame Player API](https://developers.google.com/youtube/iframe_api_reference).
 ///
@@ -228,11 +229,10 @@ class _YoutubePlayerState extends State<YoutubePlayer> {
       controller.updateValue(
         controller.value.copyWith(
           toggleFullScreen: false,
-          isFullScreen: !controller.value.isFullScreen,
           isControlsVisible: false
         ),
       );
-      if (!controller.value.isFullScreen) {
+      if (controller.value.isFullScreen) {
 
         SystemChrome.setEnabledSystemUIOverlays([]);
         SystemChrome.setPreferredOrientations([
@@ -276,7 +276,7 @@ class _YoutubePlayerState extends State<YoutubePlayer> {
             controller.value.copyWith(webViewController: _cachedWebController),
           )
           ..seekTo(_cachedPosition);
-        Future.delayed(Duration(seconds: 2), () => controller.play());
+        Future.delayed(const Duration(seconds: 1), () => controller.play());
       }
     }
     if (mounted) setState(() {});
