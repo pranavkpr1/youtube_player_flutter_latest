@@ -243,10 +243,16 @@ class _YoutubePlayerState extends State<YoutubePlayer> {
       }
       else {
         controller.pause();
-        Duration _cachedPosition = controller.value.position;
-        String _videoId = controller.initialVideoId;
+        var _cachedPosition = controller.value.position;
+        var _videoId = controller.metadata.videoId;
         _cachedWebController = controller.value.webViewController;
         controller.reset();
+
+        SystemChrome.setEnabledSystemUIOverlays([]);
+        SystemChrome.setPreferredOrientations([
+          DeviceOrientation.landscapeLeft,
+          DeviceOrientation.landscapeRight,
+        ]);
 
         await showFullScreenYoutubePlayer(
           context: context,
@@ -262,6 +268,7 @@ class _YoutubePlayerState extends State<YoutubePlayer> {
           progressColors: widget.progressColors,
           thumbnail: widget.thumbnail,
           topActions: widget.topActions,
+
         );
         _cachedPosition = controller.value.position;
         controller
@@ -283,7 +290,15 @@ class _YoutubePlayerState extends State<YoutubePlayer> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
+    return  WillPopScope(
+     onWillPop: () async {
+      if (controller.value.isFullScreen) {
+      controller.toggleFullScreenMode();
+      return false;
+    }
+     return true;
+    },
+    child: Material(
       elevation: 0,
       color: Colors.black,
       child: InheritedYoutubePlayer(
@@ -337,6 +352,7 @@ class _YoutubePlayerState extends State<YoutubePlayer> {
           ),
         ),
       ),
+    )
     );
   }
 
