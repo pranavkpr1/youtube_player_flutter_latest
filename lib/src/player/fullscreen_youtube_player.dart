@@ -95,34 +95,59 @@ class _FullScreenYoutubePlayer extends StatefulWidget {
 class _FullScreenYoutubePlayerState extends State<_FullScreenYoutubePlayer> {
   @override
   Widget build(BuildContext context) {
-    return YoutubePlayer(
-      controller: widget.controller,
-      showVideoProgressIndicator: false,
-      actionsPadding: widget.actionsPadding,
-      bottomActions: widget.bottomActions,
-      bufferIndicator: widget.bufferIndicator,
-      controlsTimeOut: widget.controlsTimeOut,
-      liveUIColor: widget.liveUIColor,
-      onReady: widget.onReady,
-      progressColors: widget.progressColors,
-      thumbnail: widget.thumbnail,
-      topActions: widget.topActions,
+    return OrientationBuilder(
+      builder: (context, orientation) =>
+      orientation == Orientation.portrait ?
+      AspectRatio(
+          aspectRatio: 16/9,
+          child: FittedBox(
+          fit: BoxFit.cover,
+          child: Center(
+              child: YoutubePlayer(
+                controller: widget.controller,
+                showVideoProgressIndicator: false,
+                actionsPadding: widget.actionsPadding,
+                bottomActions: widget.bottomActions,
+                bufferIndicator: widget.bufferIndicator,
+                controlsTimeOut: widget.controlsTimeOut,
+                liveUIColor: widget.liveUIColor,
+                onReady: widget.onReady,
+                progressColors: widget.progressColors,
+                thumbnail: widget.thumbnail,
+                topActions: widget.topActions,
+      ))))
+          :
+      YoutubePlayer(
+        controller: widget.controller,
+        showVideoProgressIndicator: false,
+        actionsPadding: widget.actionsPadding,
+        bottomActions: widget.bottomActions,
+        bufferIndicator: widget.bufferIndicator,
+        controlsTimeOut: widget.controlsTimeOut,
+        liveUIColor: widget.liveUIColor,
+        onReady: widget.onReady,
+        progressColors: widget.progressColors,
+        thumbnail: widget.thumbnail,
+        topActions: widget.topActions,
+      )
     );
+
   }
 
   @override
   void initState() {
-    super.initState();
-    SchedulerBinding.instance.addPostFrameCallback(
-      (_) => widget.controller.updateValue(
-        widget.controller.value.copyWith(isFullScreen: true),
-      ),
-    );
+
     SystemChrome.setEnabledSystemUIOverlays([]);
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight,
     ]);
+    SchedulerBinding.instance.addPostFrameCallback(
+      (_) => widget.controller.updateValue(
+        widget.controller.value.copyWith(isFullScreen: true),
+      ),
+    );
+    super.initState();
   }
 
   @override
