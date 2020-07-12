@@ -233,7 +233,10 @@ class _YoutubePlayerState extends State<YoutubePlayer> {
         ),
       );
       if (controller.value.isFullScreen) {
-
+        SystemChrome.setEnabledSystemUIOverlays([]);
+        SystemChrome.setPreferredOrientations([
+          DeviceOrientation.portraitUp,
+        ]);
         Navigator.pop(context);
 
       }
@@ -267,7 +270,8 @@ class _YoutubePlayerState extends State<YoutubePlayer> {
             controller.value.copyWith(webViewController: _cachedWebController),
           )
           ..seekTo(_cachedPosition);
-        Future.delayed(const Duration(seconds: 1), () => controller.play());
+        //Future.delayed(const Duration(seconds: 1), () =>
+            controller.play();
       }
     }
     if (mounted) setState(() {});
