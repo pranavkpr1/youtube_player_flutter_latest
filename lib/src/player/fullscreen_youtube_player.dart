@@ -49,10 +49,7 @@ Future<void> showFullScreenYoutubePlayer({
 
   await Navigator.of(context, rootNavigator: true).push(route);
 
-  SystemChrome.setEnabledSystemUIOverlays([]);
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-  ]);
+
 }
 
 Widget _fullScreenRoutePageBuilder(
