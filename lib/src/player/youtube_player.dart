@@ -295,6 +295,7 @@ class _YoutubePlayerState extends State<YoutubePlayer> {
       color: Colors.black,
       child: InheritedYoutubePlayer(
         controller: controller,
+    child:Center(
         child: Container(
           color: Colors.black,
           width:  MediaQuery.of(context).size.width,  //widget.width ??
@@ -343,6 +344,7 @@ class _YoutubePlayerState extends State<YoutubePlayer> {
             ),
           ),
         ),
+    ),
       ),
     )
     );
@@ -354,9 +356,13 @@ class _YoutubePlayerState extends State<YoutubePlayer> {
       child: Container(
       child:
       Stack(
-        fit: StackFit.expand,
-        overflow: Overflow.visible,
+
         children: [
+          Center(
+            child: AspectRatio(
+                aspectRatio: widget.aspectRatio ??
+                    _calculateAspectRatio(context),
+                child:
            RawYoutubePlayer(
               key: widget.key,
               onEnded: (YoutubeMetaData metaData) {
@@ -370,6 +376,8 @@ class _YoutubePlayerState extends State<YoutubePlayer> {
                 }
               },
             ),
+            ),
+          ),
 
           if (!controller.flags.hideThumbnail)
             AnimatedOpacity(
