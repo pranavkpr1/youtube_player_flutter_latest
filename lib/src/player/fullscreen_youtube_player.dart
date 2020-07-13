@@ -10,6 +10,7 @@ import '../player/youtube_player.dart';
 import '../utils/youtube_player_controller.dart';
 import '../widgets/widgets.dart';
 
+var controllerProvider;
 /// Shows [YoutubePlayer] in fullScreen landscape mode.
 Future<void> showFullScreenYoutubePlayer({
   @required BuildContext context,
@@ -23,24 +24,70 @@ Future<void> showFullScreenYoutubePlayer({
   VoidCallback onReady,
   ProgressBarColors progressColors,
   Widget thumbnail,
-}) async =>
-    await Navigator.push(
-      context,
-      _YoutubePageRoute(
-        builder: (context) => _FullScreenYoutubePlayer(
-          controller: controller,
-          actionsPadding: actionsPadding,
-          topActions: topActions,
-          bottomActions: bottomActions,
-          bufferIndicator: bufferIndicator,
-          controlsTimeOut: controlsTimeOut,
-          liveUIColor: liveUIColor,
-          onReady: onReady,
-          progressColors: progressColors,
-          thumbnail: thumbnail,
-        ),
-      ),
-    );
+}) async {
+
+  final TransitionRoute<Null> route = PageRouteBuilder<Null>(
+    pageBuilder: _fullScreenRoutePageBuilder,
+  );
+  controllerProvider = _FullScreenYoutubePlayer(
+    controller: controller,
+    actionsPadding: actionsPadding,
+    topActions: topActions,
+    bottomActions: bottomActions,
+    bufferIndicator: bufferIndicator,
+    controlsTimeOut: controlsTimeOut,
+    liveUIColor: liveUIColor,
+    onReady: onReady,
+    progressColors: progressColors,
+    thumbnail: thumbnail,
+  );
+  SystemChrome.setEnabledSystemUIOverlays([]);
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.landscapeLeft,
+    DeviceOrientation.landscapeRight,
+  ]);
+
+  await Navigator.of(context, rootNavigator: true).push(route);
+}
+
+Widget _fullScreenRoutePageBuilder(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+
+    ) {
+
+    return _defaultRoutePageBuilder(
+        context, animation, secondaryAnimation, controllerProvider);
+
+}
+
+AnimatedWidget _defaultRoutePageBuilder(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    YoutubePlayer controllerProvider) {
+  return AnimatedBuilder(
+    animation: animation,
+    builder: (BuildContext context, Widget child) {
+      return _buildFullScreenVideo(context, animation, controllerProvider);
+    },
+  );
+}
+
+Widget _buildFullScreenVideo(
+    BuildContext context,
+    Animation<double> animation,
+    YoutubePlayer controllerProvider) {
+  return Scaffold(
+    resizeToAvoidBottomPadding: false,
+    body: Container(
+      alignment: Alignment.center,
+      color: Colors.black,
+      child: controllerProvider,
+    ),
+  );
+}
 
 class _FullScreenYoutubePlayer extends StatefulWidget {
   /// {@macro youtube_player_flutter.controller}
@@ -118,11 +165,7 @@ class _FullScreenYoutubePlayerState extends State<_FullScreenYoutubePlayer> {
         widget.controller.value.copyWith(isFullScreen: true),
       ),
     );
-    SystemChrome.setEnabledSystemUIOverlays([]);
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight,
-    ]);
+
   }
 
   @override
@@ -137,14 +180,4 @@ class _FullScreenYoutubePlayerState extends State<_FullScreenYoutubePlayer> {
   }
 }
 
-class _YoutubePageRoute<T> extends MaterialPageRoute<T> {
-  _YoutubePageRoute({
-    @required WidgetBuilder builder,
-  }) : super(builder: builder);
 
-  @override
-  Widget buildTransitions(BuildContext context, Animation<double> animation,
-      Animation<double> secondaryAnimation, Widget child) {
-    return child;
-  }
-}

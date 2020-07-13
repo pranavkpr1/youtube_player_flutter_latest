@@ -237,7 +237,7 @@ class _YoutubePlayerState extends State<YoutubePlayer> {
         SystemChrome.setPreferredOrientations([
           DeviceOrientation.portraitUp,
         ]);
-        Navigator.pop(context);
+        Navigator.of(context, rootNavigator: true).pop();               //Navigator.pop(context);
 
       }
       else {
