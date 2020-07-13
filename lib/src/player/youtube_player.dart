@@ -350,8 +350,10 @@ class _YoutubePlayerState extends State<YoutubePlayer> {
 
   Widget _buildPlayer({Widget errorWidget}) {
     return AspectRatio(
-      aspectRatio: _calculateAspectRatio(context),
-      child: Stack(
+      aspectRatio: widget.aspectRatio ??_calculateAspectRatio(context),
+      child: Container(
+      child:
+      Stack(
         fit: StackFit.expand,
         overflow: Overflow.visible,
         children: [
@@ -459,7 +461,7 @@ class _YoutubePlayerState extends State<YoutubePlayer> {
           if (controller.value.hasError) errorWidget,
         ],
       ),
-    );
+    ));
   }
 
   Widget get _thumbnail => Image.network(
