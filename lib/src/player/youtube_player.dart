@@ -297,7 +297,7 @@ class _YoutubePlayerState extends State<YoutubePlayer> {
         controller: controller,
         child: Container(
           color: Colors.black,
-          width: widget.width ?? MediaQuery.of(context).size.width,
+          width:  MediaQuery.of(context).size.width,  //widget.width ??
           child: _buildPlayer(
             errorWidget: Container(
               color: Colors.black87,
@@ -350,17 +350,12 @@ class _YoutubePlayerState extends State<YoutubePlayer> {
 
   Widget _buildPlayer({Widget errorWidget}) {
     return AspectRatio(
-      aspectRatio: _aspectRatio,
+      aspectRatio: _calculateAspectRatio(context),
       child: Stack(
         fit: StackFit.expand,
         overflow: Overflow.visible,
         children: [
-          Transform.scale(
-            scale: controller.value.isFullScreen
-                ? (1 / _aspectRatio * MediaQuery.of(context).size.width) /
-                    MediaQuery.of(context).size.height
-                : 1,
-            child: RawYoutubePlayer(
+           RawYoutubePlayer(
               key: widget.key,
               onEnded: (YoutubeMetaData metaData) {
                 if (controller.flags.loop) {
@@ -373,7 +368,7 @@ class _YoutubePlayerState extends State<YoutubePlayer> {
                 }
               },
             ),
-          ),
+
           if (!controller.flags.hideThumbnail)
             AnimatedOpacity(
               opacity: controller.value.isPlaying ? 0 : 1,
@@ -489,4 +484,11 @@ class _YoutubePlayerState extends State<YoutubePlayer> {
           errorBuilder: (context, _, __) => Container(),
         ),
       );
+  double _calculateAspectRatio(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final width = size.width;
+    final height = size.height;
+
+    return width > height ? width / height : height / width;
+  }
 }
