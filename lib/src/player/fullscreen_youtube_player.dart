@@ -66,7 +66,7 @@ AnimatedWidget _defaultRoutePageBuilder(
     BuildContext context,
     Animation<double> animation,
     Animation<double> secondaryAnimation,
-    YoutubePlayer controllerProvider) {
+    var controllerProvider) {
   return AnimatedBuilder(
     animation: animation,
     builder: (BuildContext context, Widget child) {
@@ -78,7 +78,7 @@ AnimatedWidget _defaultRoutePageBuilder(
 Widget _buildFullScreenVideo(
     BuildContext context,
     Animation<double> animation,
-    YoutubePlayer controllerProvider) {
+    var controllerProvider) {
   return Scaffold(
     resizeToAvoidBottomPadding: false,
     body: Container(
