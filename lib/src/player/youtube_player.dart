@@ -185,7 +185,7 @@ class YoutubePlayer extends StatefulWidget {
   }) =>
       webp
           ? 'https://i3.ytimg.com/vi_webp/$videoId/$quality.webp'
-          : 'https://i3.ytimg.com/vi/$videoId/$quality.jpg';
+          : "https://img.youtube.com/vi/$videoId/hqdefault.jpg";
 
   @override
   _YoutubePlayerState createState() => _YoutubePlayerState();
@@ -212,11 +212,14 @@ class _YoutubePlayerState extends State<YoutubePlayer> {
   }
 
   void listener() async {
+
     if (controller.value.isReady && _initialLoad) {
       _initialLoad = false;
+
       if (controller.flags.autoPlay) controller.play();
       if (controller.flags.mute) controller.mute();
       if (widget.onReady != null) widget.onReady();
+
       if (controller.flags.controlsVisibleAtStart) {
         controller.updateValue(
           controller.value.copyWith(isControlsVisible: true),
@@ -237,7 +240,7 @@ class _YoutubePlayerState extends State<YoutubePlayer> {
         SystemChrome.setPreferredOrientations([
           DeviceOrientation.portraitUp,
         ]);
-        Navigator.of(context, rootNavigator: true).pop();               //Navigator.pop(context);
+        Navigator.of(context, rootNavigator: true).pop();
 
       }
       else {
@@ -264,6 +267,7 @@ class _YoutubePlayerState extends State<YoutubePlayer> {
           topActions: widget.topActions,
 
         );
+
         _cachedPosition = controller.value.position;
         controller
           ..updateValue(
@@ -301,7 +305,7 @@ class _YoutubePlayerState extends State<YoutubePlayer> {
     child:Center(
         child: Container(
           color: Colors.black,
-          width:  MediaQuery.of(context).size.width,  //widget.width ??
+          width:  MediaQuery.of(context).size.width,
           child: _buildPlayer(
             errorWidget: Container(
               color: Colors.black87,
@@ -439,7 +443,6 @@ class _YoutubePlayerState extends State<YoutubePlayer> {
                                   colors: widget.progressColors,
                                 ),
                                 RemainingDuration(),
-                                const PlaybackSpeedButton(),
                                 FullScreenButton(),
                               ],
                         ),
@@ -480,6 +483,7 @@ class _YoutubePlayerState extends State<YoutubePlayer> {
           videoId: controller.metadata.videoId.isEmpty
               ? controller.initialVideoId
               : controller.metadata.videoId,
+          webp:false
         ),
         fit: BoxFit.cover,
         loadingBuilder: (_, child, progress) =>
