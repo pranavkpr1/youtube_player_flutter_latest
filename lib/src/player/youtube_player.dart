@@ -184,7 +184,7 @@ class YoutubePlayer extends StatefulWidget {
     bool webp = true,
   }) =>
       webp
-          ? 'https://i3.ytimg.com/vi_webp/$videoId/$quality.webp'
+          ? 'https://img.youtube.com/vi/$videoId/hqdefault.jpg'
           : "https://img.youtube.com/vi/$videoId/hqdefault.jpg";
 
   @override
