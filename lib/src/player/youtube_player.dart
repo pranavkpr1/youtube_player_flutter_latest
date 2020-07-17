@@ -483,7 +483,8 @@ class _YoutubePlayerState extends State<YoutubePlayer> {
           videoId: controller.metadata.videoId.isEmpty
               ? controller.initialVideoId
               : controller.metadata.videoId,
-          webp:false
+          webp:false,
+
         ),
         fit: BoxFit.cover,
         loadingBuilder: (_, child, progress) =>
@@ -499,7 +500,11 @@ class _YoutubePlayerState extends State<YoutubePlayer> {
           loadingBuilder: (_, child, progress) =>
               progress == null ? child : Container(color: Colors.black),
           errorBuilder: (context, _, __) => Container(),
+          cacheWidth: 480,
+          cacheHeight:360
         ),
+      cacheWidth: 480,
+      cacheHeight:360
       );
   double _calculateAspectRatio(BuildContext context) {
     final size = MediaQuery.of(context).size;
