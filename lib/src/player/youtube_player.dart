@@ -236,7 +236,9 @@ class _YoutubePlayerState extends State<YoutubePlayer> {
         ),
       );
       if (controller.value.isFullScreen) {
-        SystemChrome.setEnabledSystemUIOverlays([]);
+         SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        statusBarColor: Color(0xFFF37E37)
+    ));
         SystemChrome.setPreferredOrientations([
           DeviceOrientation.portraitUp,
         ]);
@@ -244,6 +246,7 @@ class _YoutubePlayerState extends State<YoutubePlayer> {
 
       }
       else {
+        SystemChrome.setEnabledSystemUIOverlays([]);
         controller.pause();
         var _cachedPosition = controller.value.position;
         var _videoId = controller.metadata.videoId;
