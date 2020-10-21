@@ -236,9 +236,7 @@ class _YoutubePlayerState extends State<YoutubePlayer> {
         ),
       );
       if (controller.value.isFullScreen) {
-         SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-        statusBarColor: Color(0xFFF37E37)
-    ));
+        SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
         SystemChrome.setPreferredOrientations([
           DeviceOrientation.portraitUp,
         ]);
